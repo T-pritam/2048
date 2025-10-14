@@ -1,0 +1,385 @@
+/* 2048 Game Styles */
+/* Optimized for both desktop and mobile */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #faf8ef;
+  color: #776e65;
+  overflow-x: hidden;
+  /* Prevent pull-to-refresh on mobile */
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
+}
+
+.game-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+  /* Prevent scroll refresh on mobile game area */
+  overscroll-behavior: contain;
+  -webkit-overscroll-behavior: contain;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.game-title {
+  font-size: 48px;
+  font-weight: bold;
+  color: #776e65;
+  margin: 0;
+}
+
+.score-container {
+  display: flex;
+  gap: 10px;
+}
+
+.score-box {
+  background-color: #bbada0;
+  padding: 10px 15px;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  min-width: 80px;
+}
+
+.score-label {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.score-value {
+  display: block;
+  font-size: 18px;
+}
+
+.game-info {
+  margin-bottom: 20px;
+}
+
+.game-info p {
+  margin-bottom: 15px;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.restart-button {
+  background-color: #8f7a66;
+  color: #f9f6f2;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.restart-button:hover {
+  background-color: #9f8a76;
+}
+
+.game-board {
+  position: relative;
+  background-color: #bbada0;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 20px;
+  /* Prevent pull-to-refresh specifically on game board */
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 8px;
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.tile {
+  background-color: #cdc1b4;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 35px;
+  font-weight: bold;
+  position: relative;
+  transition: all 0.15s ease-in-out;
+  transform-origin: center;
+}
+
+/* Animation classes for tile movements and merging */
+.tile-new {
+  animation: tileAppear 0.2s ease-in-out;
+}
+
+.tile-merged {
+  animation: tileMerge 0.3s ease-in-out;
+}
+
+.tile-moving {
+  transition: transform 0.15s ease-in-out;
+}
+
+@keyframes tileAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes tileMerge {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes scoreIncrease {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+    color: #f67c5f;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.tile-empty {
+  background-color: #cdc1b4;
+}
+
+/* Tile animations and colors are handled in JavaScript */
+
+.controls-info {
+  margin-bottom: 20px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #776e65;
+}
+
+.mobile-controls {
+  display: none;
+  margin-top: 20px;
+}
+
+.control-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.control-button {
+  width: 60px;
+  height: 60px;
+  background-color: #8f7a66;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  user-select: none;
+}
+
+.control-button:hover {
+  background-color: #9f8a76;
+}
+
+.control-button:active {
+  background-color: #7f6a56;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  max-width: 300px;
+  width: 90%;
+}
+
+.modal h2 {
+  color: #776e65;
+  margin-bottom: 15px;
+  font-size: 24px;
+}
+
+.modal p {
+  color: #776e65;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.modal-buttons button {
+  background-color: #8f7a66;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.modal-buttons button:hover {
+  background-color: #9f8a76;
+}
+
+.loading {
+  text-align: center;
+  font-size: 18px;
+  padding: 50px;
+  color: #776e65;
+}
+
+/* Mobile responsive design */
+@media (max-width: 600px) {
+  .game-container {
+    padding: 15px;
+    height: 100vh;
+    overflow-y: auto;
+    overscroll-behavior: none;
+  }
+
+  .game-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .game-title {
+    font-size: 36px;
+  }
+
+  .score-container {
+    justify-content: center;
+  }
+
+  .tile {
+    font-size: 28px;
+  }
+
+  .mobile-controls {
+    display: block;
+  }
+
+  .controls-info {
+    font-size: 13px;
+  }
+
+  /* Hide desktop-specific text on mobile */
+  .controls-info strong {
+    display: none;
+  }
+}
+
+@media (max-width: 400px) {
+  .game-container {
+    padding: 10px;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .game-title {
+    font-size: 30px;
+  }
+
+  .tile {
+    font-size: 24px;
+  }
+
+  /* Responsive font sizes for different tile values on mobile */
+  .tile[style*="28px"] {
+    font-size: 20px !important;
+  }
+  
+  .tile[style*="32px"] {
+    font-size: 22px !important;
+  }
+
+  .control-button {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+
+  .score-box {
+    min-width: 70px;
+    padding: 8px 12px;
+  }
+
+  .score-value {
+    font-size: 16px;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .control-button:hover {
+    background-color: #8f7a66;
+  }
+  
+  .control-button:active {
+    background-color: #7f6a56;
+  }
+  
+  .restart-button:hover {
+    background-color: #8f7a66;
+  }
+}
