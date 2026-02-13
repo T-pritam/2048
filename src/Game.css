@@ -282,6 +282,90 @@ body {
   background-color: #9f8a76;
 }
 
+/* Win Modal Special Styling */
+.win-overlay {
+  animation: fadeInOverlay 0.3s ease-out;
+}
+
+.win-modal {
+  animation: winModalPopIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: linear-gradient(135deg, #f7e26b 0%, #ffeb3b 100%);
+  border: 3px solid #fbc02d;
+  box-shadow: 0 10px 40px rgba(251, 192, 45, 0.4);
+}
+
+.win-modal h2 {
+  color: #d32f2f;
+  font-size: 32px;
+  margin-bottom: 20px;
+  animation: bounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.win-modal p {
+  color: #333;
+  font-size: 16px;
+}
+
+.win-modal .win-score {
+  font-size: 18px;
+  font-weight: bold;
+  color: #d32f2f;
+  margin: 15px 0 !important;
+}
+
+.continue-btn {
+  background-color: #4caf50 !important;
+  border: none;
+  padding: 12px 24px !important;
+  font-size: 15px !important;
+  font-weight: bold !important;
+}
+
+.continue-btn:hover {
+  background-color: #45a049 !important;
+}
+
+.restart-btn {
+  background-color: #ff9800 !important;
+  border: none;
+  padding: 12px 24px !important;
+  font-size: 15px !important;
+  font-weight: bold !important;
+}
+
+.restart-btn:hover {
+  background-color: #e68900 !important;
+}
+
+@keyframes fadeInOverlay {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+@keyframes winModalPopIn {
+  0% {
+    transform: scale(0.7) rotate(-5deg);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
 .loading {
   text-align: center;
   font-size: 18px;

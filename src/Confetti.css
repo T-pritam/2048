@@ -1,0 +1,106 @@
+/* Confetti Animation Styles */
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 999;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: hsl(var(--hue), 100%, 50%);
+  --hue: calc(360 * var(--seed, 0));
+  animation: fall var(--duration, 2s) linear calc(var(--delay, 0s) * 1) forwards;
+  transform-origin: center;
+}
+
+.confetti-piece {
+  --hue-values: 0, 40, 80, 120, 160, 200, 240, 280, 320;
+  --hue: calc(
+    (
+      var(--x, 0) * 37 + 
+      var(--y, 0) * 73 + 
+      var(--z, 0) * 113
+    ) %
+    360
+  );
+}
+
+/* Randomly set hues for each piece */
+.confetti-piece:nth-child(1) { --hue: 0; }
+.confetti-piece:nth-child(2) { --hue: 40; }
+.confetti-piece:nth-child(3) { --hue: 80; }
+.confetti-piece:nth-child(4) { --hue: 120; }
+.confetti-piece:nth-child(5) { --hue: 160; }
+.confetti-piece:nth-child(6) { --hue: 200; }
+.confetti-piece:nth-child(7) { --hue: 240; }
+.confetti-piece:nth-child(8) { --hue: 280; }
+.confetti-piece:nth-child(9) { --hue: 320; }
+.confetti-piece:nth-child(10) { --hue: 0; }
+.confetti-piece:nth-child(11) { --hue: 40; }
+.confetti-piece:nth-child(12) { --hue: 80; }
+.confetti-piece:nth-child(13) { --hue: 120; }
+.confetti-piece:nth-child(14) { --hue: 160; }
+.confetti-piece:nth-child(15) { --hue: 200; }
+.confetti-piece:nth-child(16) { --hue: 240; }
+.confetti-piece:nth-child(17) { --hue: 280; }
+.confetti-piece:nth-child(18) { --hue: 320; }
+.confetti-piece:nth-child(19) { --hue: 0; }
+.confetti-piece:nth-child(20) { --hue: 40; }
+.confetti-piece:nth-child(21) { --hue: 80; }
+.confetti-piece:nth-child(22) { --hue: 120; }
+.confetti-piece:nth-child(23) { --hue: 160; }
+.confetti-piece:nth-child(24) { --hue: 200; }
+.confetti-piece:nth-child(25) { --hue: 240; }
+.confetti-piece:nth-child(26) { --hue: 280; }
+.confetti-piece:nth-child(27) { --hue: 320; }
+.confetti-piece:nth-child(28) { --hue: 0; }
+.confetti-piece:nth-child(29) { --hue: 40; }
+.confetti-piece:nth-child(30) { --hue: 80; }
+.confetti-piece:nth-child(31) { --hue: 120; }
+.confetti-piece:nth-child(32) { --hue: 160; }
+.confetti-piece:nth-child(33) { --hue: 200; }
+.confetti-piece:nth-child(34) { --hue: 240; }
+.confetti-piece:nth-child(35) { --hue: 280; }
+.confetti-piece:nth-child(36) { --hue: 320; }
+.confetti-piece:nth-child(37) { --hue: 0; }
+.confetti-piece:nth-child(38) { --hue: 40; }
+.confetti-piece:nth-child(39) { --hue: 80; }
+.confetti-piece:nth-child(40) { --hue: 120; }
+.confetti-piece:nth-child(41) { --hue: 160; }
+.confetti-piece:nth-child(42) { --hue: 200; }
+.confetti-piece:nth-child(43) { --hue: 240; }
+.confetti-piece:nth-child(44) { --hue: 280; }
+.confetti-piece:nth-child(45) { --hue: 320; }
+.confetti-piece:nth-child(46) { --hue: 0; }
+.confetti-piece:nth-child(47) { --hue: 40; }
+.confetti-piece:nth-child(48) { --hue: 80; }
+.confetti-piece:nth-child(49) { --hue: 120; }
+.confetti-piece:nth-child(50) { --hue: 160; }
+
+@keyframes fall {
+  0% {
+    transform: translateY(-10px) rotateZ(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotateZ(360deg);
+    opacity: 0;
+  }
+}
+
+/* Celebration animation for modal */
+@keyframes celebrate {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}

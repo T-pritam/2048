@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { GameLogic } from './gameLogic';
 import { GameControls, GameUtils } from './gameControls';
+import Confetti from './Confetti';
 import './Game.css';
 
 const Game = () => {
@@ -215,14 +216,16 @@ const Game = () => {
       </div>
 
       {/* Win Modal */}
+      <Confetti isActive={showWinModal} />
       {showWinModal && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <h2>You Win!</h2>
-            <p>Congratulations! You reached the 2048 tile!</p>
+        <div className="modal-overlay win-overlay">
+          <div className="modal win-modal">
+            <h2>🎉 You Win! 🎉</h2>
+            <p>Congratulations! You reached the <strong>2048 tile!</strong></p>
+            <p className="win-score">Your Score: {GameUtils.formatScore(gameState.score)}</p>
             <div className="modal-buttons">
-              <button onClick={handleContinue}>Continue</button>
-              <button onClick={handleRestart}>Try Again</button>
+              <button className="continue-btn" onClick={handleContinue}>Continue Playing</button>
+              <button className="restart-btn" onClick={handleRestart}>New Game</button>
             </div>
           </div>
         </div>
