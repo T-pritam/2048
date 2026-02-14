@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { GameLogic } from './gameLogic';
 import { GameControls, GameUtils } from './gameControls';
 import Confetti from './Confetti';
@@ -74,7 +74,7 @@ const Game = () => {
         setShowGameOverModal(true);
       }
     }
-  }, [gameState, showGameOverModal, celebratedMilestones]);
+  }, [gameState, showGameOverModal, checkMilestones]);
 
   const handleMove = (direction) => {
     if (gameLogicRef.current) {
@@ -98,32 +98,26 @@ const Game = () => {
     }
   };
 
-  const handleContinue = () => {
-    setShowCelebration(false);
-  };
+  const checkMilestones = useCallback((grid) => {
+  let maxTile = 0;
 
-  const checkMilestones = (grid) => {
-    // Check for milestone tiles: 2048, 4096, 8192, 16384, etc.
-    let maxTile = 0;
-    for (let i = 0; i < grid.length; i++) {
-      for (let j = 0; j < grid[i].length; j++) {
-        if (grid[i][j] > maxTile) {
-          maxTile = grid[i][j];
-        }
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[i].length; j++) {
+      if (grid[i][j] > maxTile) {
+        maxTile = grid[i][j];
       }
     }
+  }
 
-    // Check if it's a power of 2 and >= 2048
-    if (maxTile >= 2048 && !celebratedMilestones.has(maxTile)) {
-      // Verify it's a power of 2
-      if ((maxTile & (maxTile - 1)) === 0) {
-        setCelebratedMilestones(prev => new Set(prev).add(maxTile));
-        setCelebrationMessage(`🎉 Reached ${GameUtils.formatScore(maxTile)}! 🎉`);
-        setShowCelebration(true);
-        setTimeout(() => setShowCelebration(false), 2500);
-      }
+  if (maxTile >= 2048 && !celebratedMilestones.has(maxTile)) {
+    if ((maxTile & (maxTile - 1)) === 0) {
+      setCelebratedMilestones(prev => new Set(prev).add(maxTile));
+      setCelebrationMessage(`🎉 Reached ${GameUtils.formatScore(maxTile)}! 🎉`);
+      setShowCelebration(true);
+      setTimeout(() => setShowCelebration(false), 2500);
     }
-  };
+  }
+}, [celebratedMilestones]);
 
   const renderTile = (value, rowIndex, colIndex) => {
     const isEmpty = value === 0;
