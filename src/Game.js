@@ -16,6 +16,17 @@ const Game = () => {
   const scoreRef = useRef(null);
   const previousScoreRef = useRef(0);
 
+  const checkMilestones = useCallback((grid) => {
+  let maxTile = 0;
+
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[i].length; j++) {
+      if (grid[i][j] > maxTile) {
+        maxTile = grid[i][j];
+      }
+    }
+  }
+
   useEffect(() => {
     // Initialize game
     gameLogicRef.current = new GameLogic();
@@ -97,17 +108,6 @@ const Game = () => {
       previousScoreRef.current = 0;
     }
   };
-
-  const checkMilestones = useCallback((grid) => {
-  let maxTile = 0;
-
-  for (let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < grid[i].length; j++) {
-      if (grid[i][j] > maxTile) {
-        maxTile = grid[i][j];
-      }
-    }
-  }
 
   if (maxTile >= 2048 && !celebratedMilestones.has(maxTile)) {
     if ((maxTile & (maxTile - 1)) === 0) {
