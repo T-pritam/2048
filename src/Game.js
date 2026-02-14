@@ -16,6 +16,51 @@ const Game = () => {
   const scoreRef = useRef(null);
   const previousScoreRef = useRef(0);
 
+  const handleMove = (direction) => {
+    if (gameLogicRef.current) {
+      const moved = gameLogicRef.current.makeMove(direction);
+      if (moved) {
+        const newState = gameLogicRef.current.getGameState();
+        setGameState(newState);
+      }
+    }
+  };
+
+  const handleRestart = () => {
+    if (gameLogicRef.current) {
+      gameLogicRef.current.restart();
+      setGameState(gameLogicRef.current.getGameState());
+      setShowGameOverModal(false);
+      setShowCelebration(false);
+      setCelebratedMilestones(new Set());
+      setAnimatingTiles(new Set());
+      previousScoreRef.current = 0;
+    }
+  };
+
+  const checkMilestones = useCallback((grid) => {
+    // Check for milestone tiles: 2048, 4096, 8192, 16384, etc.
+    let maxTile = 0;
+    for (let i = 0; i < grid.length; i++) {
+      for (let j = 0; j < grid[i].length; j++) {
+        if (grid[i][j] > maxTile) {
+          maxTile = grid[i][j];
+        }
+      }
+    }
+
+    // Check if it's a power of 2 and >= 2048
+    if (maxTile >= 2048 && !celebratedMilestones.has(maxTile)) {
+      // Verify it's a power of 2
+      if ((maxTile & (maxTile - 1)) === 0) {
+        setCelebratedMilestones(prev => new Set(prev).add(maxTile));
+        setCelebrationMessage(`🎉 Reached ${GameUtils.formatScore(maxTile)}! 🎉`);
+        setShowCelebration(true);
+        setTimeout(() => setShowCelebration(false), 2500);
+      }
+    }
+  }, [celebratedMilestones]);
+
   useEffect(() => {
     // Initialize game
     gameLogicRef.current = new GameLogic();
@@ -74,56 +119,7 @@ const Game = () => {
         setShowGameOverModal(true);
       }
     }
-  }, [gameState, showGameOverModal, celebratedMilestones]);
-
-  const handleMove = (direction) => {
-    if (gameLogicRef.current) {
-      const moved = gameLogicRef.current.makeMove(direction);
-      if (moved) {
-        const newState = gameLogicRef.current.getGameState();
-        setGameState(newState);
-      }
-    }
-  };
-
-  const handleRestart = () => {
-    if (gameLogicRef.current) {
-      gameLogicRef.current.restart();
-      setGameState(gameLogicRef.current.getGameState());
-      setShowGameOverModal(false);
-      setShowCelebration(false);
-      setCelebratedMilestones(new Set());
-      setAnimatingTiles(new Set());
-      previousScoreRef.current = 0;
-    }
-  };
-
-  const handleContinue = () => {
-    setShowCelebration(false);
-  };
-
-  const checkMilestones = (grid) => {
-    // Check for milestone tiles: 2048, 4096, 8192, 16384, etc.
-    let maxTile = 0;
-    for (let i = 0; i < grid.length; i++) {
-      for (let j = 0; j < grid[i].length; j++) {
-        if (grid[i][j] > maxTile) {
-          maxTile = grid[i][j];
-        }
-      }
-    }
-
-    // Check if it's a power of 2 and >= 2048
-    if (maxTile >= 2048 && !celebratedMilestones.has(maxTile)) {
-      // Verify it's a power of 2
-      if ((maxTile & (maxTile - 1)) === 0) {
-        setCelebratedMilestones(prev => new Set(prev).add(maxTile));
-        setCelebrationMessage(`🎉 Reached ${GameUtils.formatScore(maxTile)}! 🎉`);
-        setShowCelebration(true);
-        setTimeout(() => setShowCelebration(false), 2500);
-      }
-    }
-  };
+  }, [gameState, showGameOverModal, celebratedMilestones, checkMilestones]);
 
   const renderTile = (value, rowIndex, colIndex) => {
     const isEmpty = value === 0;
