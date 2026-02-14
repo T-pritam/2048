@@ -6,9 +6,11 @@ import './Game.css';
 
 const Game = () => {
   const [gameState, setGameState] = useState(null);
-  const [showWinModal, setShowWinModal] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
+  const [celebrationMessage, setCelebrationMessage] = useState('');
   const [showGameOverModal, setShowGameOverModal] = useState(false);
-  const [animatingTiles, setAnimatingTiles] = useState(new Set());
+  const [, setAnimatingTiles] = useState(new Set());
+  const [celebratedMilestones, setCelebratedMilestones] = useState(new Set());
   const gameLogicRef = useRef(null);
   const gameControlsRef = useRef(null);
   const scoreRef = useRef(null);
@@ -64,17 +66,15 @@ const Game = () => {
         }, 200);
       }
 
-      // Check for win condition
-      if (gameState.hasWon && !showWinModal) {
-        setShowWinModal(true);
-      }
+      // Check for milestone celebrations
+      checkMilestones(gameState.grid);
       
       // Check for game over
       if (gameState.gameOver && !showGameOverModal) {
         setShowGameOverModal(true);
       }
     }
-  }, [gameState, showWinModal, showGameOverModal]);
+  }, [gameState, showGameOverModal, celebratedMilestones]);
 
   const handleMove = (direction) => {
     if (gameLogicRef.current) {
@@ -90,15 +90,39 @@ const Game = () => {
     if (gameLogicRef.current) {
       gameLogicRef.current.restart();
       setGameState(gameLogicRef.current.getGameState());
-      setShowWinModal(false);
       setShowGameOverModal(false);
+      setShowCelebration(false);
+      setCelebratedMilestones(new Set());
       setAnimatingTiles(new Set());
       previousScoreRef.current = 0;
     }
   };
 
   const handleContinue = () => {
-    setShowWinModal(false);
+    setShowCelebration(false);
+  };
+
+  const checkMilestones = (grid) => {
+    // Check for milestone tiles: 2048, 4096, 8192, 16384, etc.
+    let maxTile = 0;
+    for (let i = 0; i < grid.length; i++) {
+      for (let j = 0; j < grid[i].length; j++) {
+        if (grid[i][j] > maxTile) {
+          maxTile = grid[i][j];
+        }
+      }
+    }
+
+    // Check if it's a power of 2 and >= 2048
+    if (maxTile >= 2048 && !celebratedMilestones.has(maxTile)) {
+      // Verify it's a power of 2
+      if ((maxTile & (maxTile - 1)) === 0) {
+        setCelebratedMilestones(prev => new Set(prev).add(maxTile));
+        setCelebrationMessage(`🎉 Reached ${GameUtils.formatScore(maxTile)}! 🎉`);
+        setShowCelebration(true);
+        setTimeout(() => setShowCelebration(false), 2500);
+      }
+    }
   };
 
   const renderTile = (value, rowIndex, colIndex) => {
@@ -168,7 +192,7 @@ const Game = () => {
       </div>
 
       <div className="game-info">
-        <p>Join the numbers and get to the <strong>2048 tile!</strong></p>
+        <p>Join the numbers and reach the highest tile!</p>
         <button className="restart-button" onClick={handleRestart}>
           New Game
         </button>
@@ -215,18 +239,12 @@ const Game = () => {
         </div>
       </div>
 
-      {/* Win Modal */}
-      <Confetti isActive={showWinModal} />
-      {showWinModal && (
-        <div className="modal-overlay win-overlay">
-          <div className="modal win-modal">
-            <h2>🎉 You Win! 🎉</h2>
-            <p>Congratulations! You reached the <strong>2048 tile!</strong></p>
-            <p className="win-score">Your Score: {GameUtils.formatScore(gameState.score)}</p>
-            <div className="modal-buttons">
-              <button className="continue-btn" onClick={handleContinue}>Continue Playing</button>
-              <button className="restart-btn" onClick={handleRestart}>New Game</button>
-            </div>
+      {/* Celebration for milestones */}
+      <Confetti isActive={showCelebration} />
+      {showCelebration && (
+        <div className="celebration-overlay">
+          <div className="celebration-message">
+            {celebrationMessage}
           </div>
         </div>
       )}

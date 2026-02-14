@@ -60,7 +60,6 @@ export function GameLogic() {
         merged.push(val);
         score += val;
         mergedTiles.push({ value: val, timestamp: Date.now() });
-        if (val === 2048 && !hasWon) hasWon = true;
         i += 2;
       } else {
         merged.push(filtered[i]);

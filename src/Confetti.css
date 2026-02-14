@@ -20,17 +20,7 @@
   transform-origin: center;
 }
 
-.confetti-piece {
-  --hue-values: 0, 40, 80, 120, 160, 200, 240, 280, 320;
-  --hue: calc(
-    (
-      var(--x, 0) * 37 + 
-      var(--y, 0) * 73 + 
-      var(--z, 0) * 113
-    ) %
-    360
-  );
-}
+
 
 /* Randomly set hues for each piece */
 .confetti-piece:nth-child(1) { --hue: 0; }
